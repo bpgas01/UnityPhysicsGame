@@ -2,39 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+//[RequireComponent(typeof(Animator))]
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     CharacterController controller = null;
-    Animator animator = null;
+   // Animator animator = null;
 
     public float speed = 80;
     public float pushPower = 2.0f;
+
+    public bool playerLocked = false;
 
 
     // Start is called before the first frame update
     void Start()
     { 
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+       // animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal");
+        if(!playerLocked)
+        {
+            float vertical = Input.GetAxis("Vertical");
+            float horizontal = Input.GetAxis("Horizontal");
 
-        //controller.SimpleMove(transform.forward * vertical * speed * Time.fixedDeltaTime);
+            controller.SimpleMove(transform.forward * vertical * speed * Time.fixedDeltaTime);
 
-        controller.SimpleMove(transform.up * Time.fixedDeltaTime);
+      
 
-        transform.Rotate(transform.up * horizontal * speed * Time.fixedDeltaTime);
-
-        animator.SetFloat("Speed", vertical * speed * Time.fixedDeltaTime);
-
+            transform.Rotate(transform.up * horizontal * speed * Time.fixedDeltaTime);
+       
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
