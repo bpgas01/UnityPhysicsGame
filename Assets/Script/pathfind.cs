@@ -7,7 +7,6 @@ using TMPro;
 [RequireComponent(typeof(NavMeshAgent))]
 public class pathfind : MonoBehaviour
 {
-    public TextMeshProUGUI PlayButton;
     private bool hit = false;
     private Animator animator = null;
     private NavMeshAgent agent = null;
@@ -15,7 +14,6 @@ public class pathfind : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayButton.gameObject.SetActive(false);
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
     }
@@ -28,12 +26,7 @@ public class pathfind : MonoBehaviour
         animator.SetFloat("Speed", agent.velocity.magnitude);
         agent.SetDestination(Target.position);
             
-        if(agent.velocity.magnitude == 0)
-        {
-            PlayButton.gameObject.SetActive(true);
-
-        }
-
+       
     }
 
 
