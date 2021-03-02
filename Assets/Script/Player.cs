@@ -8,18 +8,32 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     CharacterController controller = null;
-   // Animator animator = null;
+    gun gun = null;
 
+    [Header("General Settings")]
     public float speed = 80;
     public float pushPower = 2.0f;
-
     public bool playerLocked = false;
 
+    [Header("Mouse Settings")]
+    [SerializeField] [Range(100f, 1000f)] float MouseSpeed = 1f;
+    [SerializeField] [Tooltip("Angle given for limiting mouse")] float lookXLimit = 45.0f;
+
+    [Header("Camera Settings")]
+    [SerializeField] Camera camera;
+    
+ 
+
+    private float rotationX = 0;
+    private float rotationY = 0;
 
     // Start is called before the first frame update
     void Start()
     { 
         controller = GetComponent<CharacterController>();
+        gun = GetComponent<gun>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
        // animator = GetComponent<Animator>();
     }
 
@@ -29,14 +43,29 @@ public class Player : MonoBehaviour
         if(!playerLocked)
         {
             float vertical = Input.GetAxis("Vertical");
-            float horizontal = Input.GetAxis("Horizontal");
-
             controller.SimpleMove(transform.forward * vertical * speed * Time.fixedDeltaTime);
 
-      
 
-            transform.Rotate(transform.up * horizontal * speed * Time.fixedDeltaTime);
-       
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Translate(Vector3.left * Time.fixedDeltaTime * 4, Space.Self); // Left
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Translate(Vector3.right * Time.fixedDeltaTime * 4, Space.Self); // right
+            }
+
+
+            rotationX += -Input.GetAxis("Mouse Y") * Time.fixedDeltaTime *  MouseSpeed;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            camera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * MouseSpeed * Time.fixedDeltaTime, 0);
+            if(Input.GetMouseButtonDown(1))
+            {
+                gun.Shoot();
+            }
+
+
         }
     }
 
