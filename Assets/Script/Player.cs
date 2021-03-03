@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
         {
             float vertical = Input.GetAxis("Vertical");
             controller.SimpleMove(transform.forward * vertical * speed * Time.fixedDeltaTime);
-
-
+            
+            
             if (Input.GetKey(KeyCode.A))
             {
                 transform.Translate(Vector3.left * Time.fixedDeltaTime * 4, Space.Self); // Left
@@ -60,12 +60,19 @@ public class Player : MonoBehaviour
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             camera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * MouseSpeed * Time.fixedDeltaTime, 0);
-            if(Input.GetMouseButtonDown(1))
+
+            // Grenade throw
+            if(Input.GetKeyDown(KeyCode.Space))
             {
                 gun.Shoot();
             }
 
+            if (Input.GetButtonDown("Fire1"))
+            {
+                gun.RayCastShoot(this.transform);
+            }
 
+            
         }
     }
 

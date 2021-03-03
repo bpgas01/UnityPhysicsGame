@@ -16,6 +16,9 @@ public class cannon : MonoBehaviour
     {
         rb = ball.GetComponent<Rigidbody>();
     }
+    
+    
+    
 
     // Update is called once per frame
     void Update()

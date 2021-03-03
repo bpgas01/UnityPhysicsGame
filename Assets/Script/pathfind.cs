@@ -26,9 +26,8 @@ public class pathfind : MonoBehaviour
         animator.SetFloat("Speed", agent.velocity.magnitude);
         agent.SetDestination(Target.position);
             
-       
+          
     }
-
 
 
 
