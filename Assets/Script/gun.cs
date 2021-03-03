@@ -75,6 +75,8 @@ public class gun : MonoBehaviour
                 ass.AddForce(force * 10, ForceMode.Impulse);
                 Debug.DrawLine(playerTransform.position, hitInfo.transform.gameObject.transform.position, Color.white,
                     10);
+           
+
                 Debug.Log(force.x + " " + force.y);
             } // For non NPC objects
         }
