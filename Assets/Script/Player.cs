@@ -48,11 +48,11 @@ public class Player : MonoBehaviour
             
             if (Input.GetKey(KeyCode.A))
             {
-                transform.Translate(Vector3.left * Time.fixedDeltaTime * 4, Space.Self); // Left
+                transform.Translate(Vector3.left * Time.fixedDeltaTime, Space.Self); // Left
             }
             if (Input.GetKey(KeyCode.D))
             {
-                transform.Translate(Vector3.right * Time.fixedDeltaTime * 4, Space.Self); // right
+                transform.Translate(Vector3.right * Time.fixedDeltaTime, Space.Self); // right
             }
 
 
@@ -72,7 +72,10 @@ public class Player : MonoBehaviour
                 gun.RayCastShoot(this.transform);
             }
 
-            
+            if (Input.GetButton("Fire1") && Input.GetKey(KeyCode.Tab))
+            {
+                gun.RayCastShoot(this.transform);
+            }
         }
     }
 

@@ -12,7 +12,10 @@ public class gun : MonoBehaviour
 {
     [Header("Object Settings")]
     [SerializeField] Transform BulletSpawn = null;
+    [SerializeField] Transform muzzleFlashPos;
     [SerializeField] GameObject BulletType;
+    [SerializeField] GameObject MuzzleFlash;
+    [SerializeField] GameObject ImpactShot;
     private TextMeshProUGUI CrossHairText; 
 
 
@@ -31,6 +34,9 @@ public class gun : MonoBehaviour
         {
             if (hitInfo.transform.GetComponentInParent<Animator>())
             {
+                Instantiate(MuzzleFlash, muzzleFlashPos.position, muzzleFlashPos.rotation);
+                Instantiate(ImpactShot, hitInfo.transform.position, hitInfo.transform.rotation);
+
                 hitInfo.transform.GetComponentInParent<Animator>().enabled = false;
                 foreach (var limb in bodyParts)
                 {
@@ -43,42 +49,49 @@ public class gun : MonoBehaviour
                             {
                                 hitInfo.transform.gameObject.GetComponent<NavMeshAgent>().enabled = false;
                             }
+
+
+
                             Destroy(hitInfo.transform.gameObject.GetComponent<CharacterJoint>());
                         }
                         catch
                         {
                             continue;
-                            
+
                         }
                     }
                 }
-                Rigidbody ass = hitInfo.transform.gameObject.GetComponent<Rigidbody>();
-                if (ass == null)
+                Rigidbody as1s = hitInfo.transform.gameObject.GetComponent<Rigidbody>();
+                if (as1s == null)
                 {
                     return;
                 }
-                // Apply force to ragdoll object based on raycast direction and the player transform
-                UnityEngine.Vector3 force = Vector3Mulitply(ray.direction, playerTransform.forward);
-                Debug.Log("Hit: " + hitInfo.transform.gameObject.name);
-                ass.AddForce(force * 10, ForceMode.Impulse);
-            }
-        
-            else
-            {
-                Rigidbody ass = hitInfo.transform.gameObject.GetComponent<Rigidbody>();
-                if (ass == null)
-                {
-                    return;
-                }
-                UnityEngine.Vector3 force = Vector3Mulitply(ray.direction, playerTransform.forward);
-                Debug.Log("Hit: " + hitInfo.transform.gameObject.name);
-                ass.AddForce(force * 10, ForceMode.Impulse);
-                Debug.DrawLine(playerTransform.position, hitInfo.transform.gameObject.transform.position, Color.white,
-                    10);
-           
 
-                Debug.Log(force.x + " " + force.y);
-            } // For non NPC objects
+
+                as1s.AddForce(transform.forward * fireForce * Time.deltaTime, ForceMode.Impulse);
+
+            }
+
+            Instantiate(MuzzleFlash, muzzleFlashPos.position, muzzleFlashPos.rotation);
+            
+            Instantiate(ImpactShot, hitInfo.transform.position, hitInfo.transform.rotation);
+
+
+            Collider[] colliders = Physics.OverlapSphere(hitInfo.transform.position, 5);
+            foreach (var near in colliders)
+            {
+                Rigidbody rigidbody = near.GetComponent<Rigidbody>();
+                if (rigidbody != null)
+                {
+                    Debug.Log(rigidbody.gameObject.name);
+                    rigidbody.AddExplosionForce(10, hitInfo.transform.position, 5, 0, ForceMode.Impulse);
+
+                }
+            }
+
+
+
+            // For non NPC objects
         }
     }
 
@@ -113,7 +126,8 @@ public class gun : MonoBehaviour
             if (rb == null)
                 return;
 
-            rb.AddForce(go.transform.forward * fireForce);
+
+            rb.AddForce(transform.forward * fireForce * Time.fixedDeltaTime, ForceMode.Impulse);
 
 
 
