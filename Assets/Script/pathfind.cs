@@ -24,12 +24,22 @@ public class pathfind : MonoBehaviour
         
         
         animator.SetFloat("Speed", agent.velocity.magnitude);
-        agent.SetDestination(Target.position);
-            
+        if (Target != null)
+        {
+            agent.SetDestination(Target.position);
+        }
+        
+        if(gameObject.GetComponent<Animator>().enabled == false)
+        {
+            transform.position = transform.up * 5 * Time.deltaTime;
+            Target = null;
+        }
+
+
           
     }
 
-
+   
 
 
     
