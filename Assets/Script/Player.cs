@@ -60,6 +60,11 @@ public class Player : MonoBehaviour
         LengthTimer -= 1 * Time.deltaTime;
         timerText.text = "< " + FormatTime(LengthTimer) + " >";
 
+        if(LengthTimer <= 0)
+        {
+            timerText.text = "Game over";
+            playerLocked = true;
+        }
 
         if (!playerLocked)
         {

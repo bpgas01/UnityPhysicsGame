@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class menu : MonoBehaviour
+
+public class menu1 : MonoBehaviour
 {
     // Start is called before the first frame update
-    public void LoadNewScene()
+   public void newGame()
     {
-        SceneManager.LoadScene(1);
-    }
-
-
-    public void ExitGame()
-    {
-        Application.Quit();
+       SceneManager.LoadScene
     }
 }
